@@ -1,7 +1,6 @@
-const Homepage = () => {
+
+export default function Homepage() {
   return (
-    <div className=''>Homepage</div>
+    <div>page</div>
   )
 }
-
-export default Homepage
