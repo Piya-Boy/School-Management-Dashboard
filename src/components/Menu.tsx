@@ -22,85 +22,85 @@ const menuItems = [
     title: "MENU",
     items: [
       {
-        icon: <HomeOutlinedIcon fontSize="large" />,
+        icon: <HomeOutlinedIcon  />,
         label: "Home",
         href: "/",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {
-        icon: <SchoolOutlinedIcon fontSize="large" />,
+        icon: <SchoolOutlinedIcon  />,
         label: "Teachers",
         href: "/list/teachers",
         visible: ["admin", "teacher"],
       },
       {
-        icon: <GroupOutlinedIcon fontSize="large" />,
+        icon: <GroupOutlinedIcon  />,
         label: "Students",
         href: "/list/students",
         visible: ["admin", "teacher"],
       },
       {
-        icon: <SupervisorAccountOutlinedIcon fontSize="large" />,
+        icon: <SupervisorAccountOutlinedIcon  />,
         label: "Parents",
         href: "/list/parents",
         visible: ["admin", "teacher"],
       },
       {
-        icon: <NoteAltOutlinedIcon fontSize="large" />,
+        icon: <NoteAltOutlinedIcon  />,
         label: "Subjects",
         href: "/list/subjects",
         visible: ["admin"],
       },
       {
-        icon: <BadgeOutlinedIcon fontSize="large" />,
+        icon: <BadgeOutlinedIcon  />,
         label: "Classes",
         href: "/list/classes",
         visible: ["admin", "teacher"],
       },
       {
-        icon: <ReceiptLongOutlinedIcon fontSize="large" />,
+        icon: <ReceiptLongOutlinedIcon  />,
         label: "Lessons",
         href: "/list/lessons",
         visible: ["admin", "teacher"],
       },
       {
-        icon: <FactCheckOutlinedIcon fontSize="large" />,
+        icon: <FactCheckOutlinedIcon  />,
         label: "Exams",
         href: "/list/exams",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {
-        icon: <AssignmentOutlinedIcon fontSize="large" />,
+        icon: <AssignmentOutlinedIcon  />,
         label: "Assignments",
         href: "/list/assignments",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {
-        icon: <TextIncreaseOutlinedIcon fontSize="large" />,
+        icon: <TextIncreaseOutlinedIcon  />,
         label: "Results",
         href: "/list/results",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {
-        icon: <CheckOutlinedIcon fontSize="large" />,
+        icon: <CheckOutlinedIcon  />,
         label: "Attendance",
         href: "/list/attendance",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {
-        icon: <CalendarMonthOutlinedIcon fontSize="large" />,
+        icon: <CalendarMonthOutlinedIcon  />,
         label: "Events",
         href: "/list/events",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {
-        icon: <TextsmsOutlinedIcon fontSize="large" />,
+        icon: <TextsmsOutlinedIcon  />,
         label: "Messages",
         href: "/list/messages",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {
-        icon: <CampaignOutlinedIcon fontSize="large" />,
+        icon: <CampaignOutlinedIcon  />,
         label: "Announcements",
         href: "/list/announcements",
         visible: ["admin", "teacher", "student", "parent"],
@@ -111,19 +111,19 @@ const menuItems = [
     title: "OTHER",
     items: [
       {
-        icon: <AccountCircleOutlinedIcon fontSize="large" />,
+        icon: <AccountCircleOutlinedIcon  />,
         label: "Profile",
         href: "/profile",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {
-        icon: <SettingsOutlinedIcon fontSize="large" />,
+        icon: <SettingsOutlinedIcon  />,
         label: "Settings",
         href: "/settings",
         visible: ["admin", "teacher", "student", "parent"],
       },
       {
-        icon: <LogoutOutlinedIcon fontSize="large" />,
+        icon: <LogoutOutlinedIcon  />,
         label: "Logout",
         href: "/logout",
         visible: ["admin", "teacher", "student", "parent"],
@@ -137,11 +137,15 @@ export default function Menu() {
     <div className="mt-4 text-sm">
       {menuItems.map((i, index) => (
         <div className="flex flex-col gap-2" key={index}>
-          <span className="hidden lg:block text-gray-400 font-light my-4">
+          <span className="hidden lg:block text-gray-400 font-light my-2">
             {i.title}
           </span>
           {i.items.map((item) => (
-            <Link href={item.href} key={item.label} className="flex items-center justify-center lg:justify-start gap-4 text-gray-500 py-4">
+            <Link
+              href={item.href}
+              key={item.label}
+              className="flex items-center justify-center lg:justify-start gap-4 text-gray-500 py-2 transition-colors duration-300 hover:text-blue-500 hover:bg-gray-100 px-4 rounded-lg"
+            >
               {item.icon}
               <span className="hidden lg:block">{item.label}</span>
             </Link>
@@ -151,3 +155,4 @@ export default function Menu() {
     </div>
   );
 }
+
