@@ -1,11 +1,12 @@
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
+import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import { Avatar, Badge } from "@mui/material";
 import Image from "next/image";
 
 export default function Navbar() {
   return (
-    <div className="flex items-center justify-between p-4">
+    <div className="flex items-center justify-between p-4 bg-white">
       {/* SEARCH BAR */}
       <div className="hidden md:flex items-center text-xs rounded-full gap-2 ring-[1.5px] ring-gray-300 px-2">
         <SearchOutlinedIcon />
@@ -18,7 +19,7 @@ export default function Navbar() {
       {/* ICONS AND USER */}
       <div className="flex items-center gap-6 justify-end w-full">
         <div className="bg-white rounded-full w-7 h-7 flex items-center justify-center cursor-pointer">
-          <Image src="/message.png" alt="message" width={20} height={20} />
+          <TextsmsOutlinedIcon fontSize="large" />
         </div>
         <Badge badgeContent={1} color="primary">
             <CampaignOutlinedIcon fontSize="large" />
