@@ -2,7 +2,6 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import CampaignOutlinedIcon from '@mui/icons-material/CampaignOutlined';
 import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 import { Avatar, Badge } from "@mui/material";
-import Image from "next/image";
 
 export default function Navbar() {
   return (
@@ -18,6 +17,7 @@ export default function Navbar() {
       </div>
       {/* ICONS AND USER */}
       <div className="flex items-center gap-6 justify-end w-full">
+        
         <div className="bg-white rounded-full w-7 h-7 flex items-center justify-center cursor-pointer">
           <TextsmsOutlinedIcon  />
         </div>
