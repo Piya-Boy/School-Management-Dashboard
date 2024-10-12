@@ -40,8 +40,8 @@ import {
   ];
 export default function AttendanceChart() {
   return (
-    <div className="bg-white rounded-lg p-4 h-full">
-    <div className="flex justify-between items-center">
+    <div className="bg-white dark:bg-slate-700 rounded-lg p-4 h-full">
+    <div className="flex justify-between items-center  dark:text-slate-400">
       <h1 className="text-lg font-semibold">Attendance</h1>
       <MoreHorizOutlinedIcon />
     </div>

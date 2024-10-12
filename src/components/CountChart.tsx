@@ -29,9 +29,9 @@ const data = [
 
 export default function CountChart() {
   return (
-    <div className="bg-white rounded-xl p-4 w-full h-full">
+    <div className="bg-white dark:bg-slate-700 rounded-xl p-4 w-full h-full">
       {/* TITLE */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between dark:text-slate-400">
         <h1 className="text-lg font-semibold">Student</h1>
         <MoreHorizOutlinedIcon />
       </div>
@@ -58,12 +58,12 @@ export default function CountChart() {
       <div className="flex gap-16 justify-center ">
         <div className="flex flex-col gap-1">
           <div className="w-5 h-5 bg-lamaSky rounded-full" />
-          <h1 className="font-bold">1222</h1>
+          <h1 className="font-bold dark:text-slate-400">1222</h1>
           <h2 className="text-xs text-gray-300">Boy (55%)</h2>
         </div>
         <div className="flex flex-col gap-1">
           <div className="w-5 h-5 bg-lamaYellow rounded-full" />
-          <h1 className="font-bold">1222</h1>
+          <h1 className="font-bold dark:text-slate-400">1222</h1>
           <h2 className="text-xs text-gray-300">Girls (55%)</h2>
         </div>
       </div>

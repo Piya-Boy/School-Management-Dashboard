@@ -76,8 +76,8 @@ import {
 
 export default function FinanceChart() {
   return (
-        <div className="bg-white rounded-xl w-full h-full p-4">
-          <div className="flex justify-between items-center">
+        <div className="bg-white dark:bg-slate-700 rounded-xl w-full h-full p-4 ">
+          <div className="flex justify-between items-center  dark:text-slate-400">
             <h1 className="text-lg font-semibold">Finance</h1>
             <MoreHorizOutlinedIcon />
           </div>
