@@ -33,7 +33,7 @@ export default function CountChart() {
       {/* TITLE */}
       <div className="flex items-center justify-between dark:text-slate-400">
         <h1 className="text-lg font-semibold">Student</h1>
-        <MoreHorizOutlinedIcon />
+        <MoreHorizOutlinedIcon className="text-gray-400 dark:text-gray-500"/>
       </div>
       {/* CHART */}
       <div className="relative w-full h-[75%]">

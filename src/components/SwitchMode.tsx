@@ -34,7 +34,7 @@ export default function SwitchMode() {
       {/* ปุ่มสำหรับ Dark Mode และ Light Mode */}
       <button 
         type="button"
-        className="font-medium text-gray-800 rounded-full hover:bg-gray-200  dark:text-gray-300 dark:hover:bg-gray-700 transition-colors duration-300"
+        className="font-medium rounded-full hover:bg-gray-200 text-gray-400 dark:text-gray-500 dark:hover:bg-gray-700 transition-colors duration-300"
         onClick={toggleTheme}
         aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
       >

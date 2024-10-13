@@ -43,7 +43,7 @@ export default function AttendanceChart() {
     <div className="bg-white dark:bg-slate-700 rounded-lg p-4 h-full">
     <div className="flex justify-between items-center  dark:text-slate-400">
       <h1 className="text-lg font-semibold">Attendance</h1>
-      <MoreHorizOutlinedIcon />
+      <MoreHorizOutlinedIcon className="text-gray-400 dark:text-gray-500"/>
     </div>
     <ResponsiveContainer width="100%" height="90%">
       <BarChart width={500} height={300} data={data} barSize={20}>

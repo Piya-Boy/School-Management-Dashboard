@@ -144,7 +144,7 @@ export default function Menu() {
             <Link
               href={item.href}
               key={item.label}
-              className="flex items-center justify-center lg:justify-start gap-4 text-gray-500 py-2 transition-colors duration-300 hover:text-blue-500 hover:bg-gray-100 px-4 rounded-lg"
+              className="flex items-center justify-center lg:justify-start gap-4 text-gray-400 dark:text-gray-500 py-2 transition-colors duration-300 hover:text-blue-500 hover:bg-gray-100 px-4 rounded-lg"
             >
               {item.icon}
               <span className="hidden lg:block">{item.label}</span>

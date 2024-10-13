@@ -79,7 +79,7 @@ export default function FinanceChart() {
     <div className="bg-white dark:bg-slate-700 rounded-xl w-full h-full p-4 ">
       <div className="flex justify-between items-center  dark:text-slate-400">
         <h1 className="text-lg font-semibold">Finance</h1>
-        <MoreHorizOutlinedIcon />
+        <MoreHorizOutlinedIcon className="text-gray-400 dark:text-gray-500"/>
       </div>
       <ResponsiveContainer width="100%" height="90%">
         <LineChart
