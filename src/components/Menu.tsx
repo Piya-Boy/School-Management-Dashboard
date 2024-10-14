@@ -1,3 +1,4 @@
+import { role } from "@/lib/data";
 import Link from "next/link";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
@@ -140,18 +141,21 @@ export default function Menu() {
           <span className="hidden lg:block text-gray-400 font-light my-2">
             {i.title}
           </span>
-          {i.items.map((item) => (
-            <Link
-              href={item.href}
-              key={item.label}
-              className="flex items-center justify-center lg:justify-start gap-4 text-gray-400 dark:text-gray-500 py-2 transition-colors duration-300 hover:text-blue-500 hover:bg-gray-100 px-4 rounded-lg"
-            >
-              {item.icon}
-              <span className="hidden lg:block">{item.label}</span>
-            </Link>
-          ))}
+          {i.items.map((item) =>
+            item.visible.includes(role) ? (
+              <Link
+                href={item.href}
+                key={item.label}
+                className="flex items-center justify-center lg:justify-start gap-4 text-gray-400 dark:text-gray-500 py-2 transition-colors duration-300 hover:text-blue-500 hover:bg-gray-100 px-4 rounded-lg"
+              >
+                {item.icon}
+                <span className="hidden lg:block">{item.label}</span>
+              </Link>
+            ) : null
+          )}
         </div>
       ))}
     </div>
   );
 }
+
