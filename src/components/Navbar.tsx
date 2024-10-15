@@ -13,7 +13,7 @@ export default function Navbar() {
         <input
           type="text"
           placeholder="Search...."
-          className="w-[200px] bg-transparent p-2 outline-none"
+          className="w-[200px] bg-transparent p-2 outline-none dark:text-slate-100"
         />
       </div>
       {/* ICONS AND USER */}

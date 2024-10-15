@@ -32,7 +32,6 @@ export default function Breadcrumbs() {
             {index > 0 && (
               <KeyboardArrowRightOutlinedIcon
                 fontSize="small"
-                className="mx-2"
               />
             )}
             <Link href={crumb.href} className="hover:text-blue-500">

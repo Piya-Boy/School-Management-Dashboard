@@ -14,7 +14,7 @@ export default function BigCalendar() {
   };
 
   return (
-    <div className="dark:bg-slate-700 dark:text-slate-400 p-4 transition-colors duration-300">
+    <div className="dark:bg-slate-700 dark:text-slate-400 p-4">
       <FullCalendar
         plugins={[timeGridPlugin, interactionPlugin]}
         initialView="timeGridWeek"
