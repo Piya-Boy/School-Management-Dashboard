@@ -3,13 +3,14 @@ import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import SortOutlinedIcon from "@mui/icons-material/SortOutlined";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
-import { role, subjectsData } from "@/lib/data";
+import { assignmentsData, role } from "@/lib/data";
 import FormModal from "@/components/FormModal";
-
-type Subject = {
+type Assignment = {
     id: number;
-    name: string;
-    teachers: string[];
+    subject: string;
+    class: string;
+    teacher: string;
+    dueDate: string;
   };
   
   const columns = [
@@ -18,8 +19,17 @@ type Subject = {
       accessor: "name",
     },
     {
-      header: "Teachers",
-      accessor: "teachers",
+      header: "Class",
+      accessor: "class",
+    },
+    {
+      header: "Teacher",
+      accessor: "teacher",
+      className: "hidden md:table-cell",
+    },
+    {
+      header: "Due Date",
+      accessor: "dueDate",
       className: "hidden md:table-cell",
     },
     {
@@ -28,21 +38,23 @@ type Subject = {
     },
   ];
   
-export default function SubjectListPage() {
+export default function AssignmentListPage() {
 
-  const renderRow = (item: Subject) => (
+  const renderRow = (item: Assignment) => (
     <tr
       key={item.id}
       className="border-b border-gray-200  dark:border-slate-600 even:bg-slate-50  dark:even:bg-slate-600 text-sm hover:bg-lamaPurpleLight dark:hover:bg-slate-600"
     >
-      <td className="flex items-center gap-4 p-4 dark:text-gray-100">{item.name}</td>
-      <td className="hidden md:table-cell ก dark:text-gray-100">{item.teachers.join(",")}</td>
+      <td className="flex items-center gap-4 p-4 dark:text-gray-100">{item.subject}</td>
+      <td className="dark:text-gray-100">{item.class}</td>
+      <td className="hidden md:table-cell dark:text-gray-100">{item.teacher}</td>
+      <td className="hidden md:table-cell dark:text-gray-100">{item.dueDate}</td>
      <td>
         <div className="flex items-center gap-2">
-          {role === "admin" && (
+          {role === "admin" || role === "teacher" && (
             <>
-              <FormModal table="subject" type="update" data={item} />
-              <FormModal table="subject" type="delete" id={item.id} />
+              <FormModal table="assigrment" type="update" data={item} />
+              <FormModal table="assigrment" type="delete" id={item.id} />
             </>
           )}
         </div>
@@ -55,7 +67,7 @@ export default function SubjectListPage() {
       {/* TOP */}
       <div className="flex items-center justify-between ">
         <h1 className="hidden md:block text-lg font-semibold dark:text-slate-400">
-          All Subjects
+          All Assignments
         </h1>
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
           <TableSearch />
@@ -67,13 +79,13 @@ export default function SubjectListPage() {
               <SortOutlinedIcon className="text-gray-400 dark:text-gray-500" />
             </button>
             {role === "admin" && (
-            <FormModal table="teacher" type="create"/>
+            <FormModal table="assigrment" type="create"/>
             )}
           </div>
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={subjectsData} />
+      <Table columns={columns} renderRow={renderRow} data={assignmentsData} />
       {/* PAGINATION */}
         <Pagination />
     </div>
