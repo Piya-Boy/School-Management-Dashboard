@@ -4,7 +4,14 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { useState } from "react";
+import TeacherForm from "./forms/TeacherForm";
 
+const forms: {
+  [key: string]: (type: "create" | "update", data?: any) => JSX.Element;
+} = {
+  teacher: (type, data) => <TeacherForm type={type} data={data} />,
+  // student: (type, data) => <StudentForm type={type} data={data} />
+};
 export default function FormModal({
   table,
   type,
@@ -63,8 +70,7 @@ export default function FormModal({
         </button>
       </form>
     ) : type === "create" || type === "update" ? (
-      // forms[table](type, data)
-      "ppp"
+      forms[table](type, data)
     ) : (
       "Form not found!"
     );
