@@ -2,7 +2,9 @@
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { useState } from "react";
+
 export default function FormModal({
   table,
   type,
@@ -42,6 +44,32 @@ export default function FormModal({
       ? EditOutlinedIcon
       : DeleteOutlineOutlinedIcon;
 
+  const handleClose = () => setOpen(false);
+
+  const handleClickOutside = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      handleClose();
+    }
+  };
+
+  const Form = () => {
+    return type === "delete" && id ? (
+      <form action="" className="p-4 flex flex-col gap-4">
+        <span className="text-center font-medium dark:text-gray-100">
+          All data will be lost. Are you sure you want to delete this {table}?
+        </span>
+        <button className="bg-red-700 hover:bg-red-600 text-white py-2 px-4 rounded-md border-none w-max self-center">
+          Delete
+        </button>
+      </form>
+    ) : type === "create" || type === "update" ? (
+      // forms[table](type, data)
+      "ppp"
+    ) : (
+      "Form not found!"
+    );
+  };
+
   return (
     <>
       <button
@@ -50,6 +78,27 @@ export default function FormModal({
       >
         <Icon className="text-gray-400 dark:text-gray-500" />
       </button>
+      {open && (
+        <div
+          className="w-screen h-screen absolute top-0 left-0 bg-black bg-opacity-60 z-50 flex items-center justify-center"
+          onClick={handleClickOutside}
+        >
+          <div
+            className={`bg-white dark:bg-slate-700 p-4 rounded-md relative w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%] transform transition-transform duration-800 ease-out translate-y-[-50px] opacity-0 ${
+              open ? "translate-y-0 opacity-100" : ""
+            }`}
+            onClick={(e) => e.stopPropagation()} // Prevents modal click from closing
+          >
+            <Form />
+            <div
+              className="absolute top-4 right-4 cursor-pointer"
+              onClick={handleClose}
+            >
+              <CloseOutlinedIcon className="text-gray-400 dark:text-gray-500" />
+            </div>            
+          </div>
+        </div>
+      )}
     </>
   );
 }
