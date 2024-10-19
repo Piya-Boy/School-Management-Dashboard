@@ -3,11 +3,12 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import Image from "next/image";
-import InputField from "../InputField";
-import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import { useEffect, useState } from "react";
+import InputField from "../InputField";
+import Image from "next/image";
+import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 
+// Define the validation schema using Zod
 const schema = z.object({
   username: z
     .string()
@@ -22,19 +23,19 @@ const schema = z.object({
   phone: z.string().min(1, { message: "Phone is required!" }),
   address: z.string().min(1, { message: "Address is required!" }),
   bloodType: z.string().min(1, { message: "Blood Type is required!" }),
-  birthday: z.date({ message: "Birthday is required!" }),
+  birthday: z.string({ message: "Birthday is required!" }),
   gender: z.enum(["male", "female"], { message: "Gender is required!" }),
-  img: z.instanceof(File, { message: "Image is required" }),
+  img: z.instanceof(File, { message: "Image is required" }).optional(),
 });
 
 type Inputs = z.infer<typeof schema>;
 
-export default function TeacherForm({
+export default function StudentForm({
   type,
   data,
 }: {
   type: "create" | "update";
-  data: any;
+  data?: any;
 }) {
   const {
     register,
@@ -47,6 +48,7 @@ export default function TeacherForm({
   const [showGenderError, setShowGenderError] = useState(false);
   const [showImageError, setShowImageError] = useState(false);
 
+  // Gender error effect
   useEffect(() => {
     if (errors.gender) {
       setShowGenderError(true);
@@ -57,6 +59,7 @@ export default function TeacherForm({
     }
   }, [errors.gender]);
 
+  // Image error effect
   useEffect(() => {
     if (errors.img) {
       setShowImageError(true);
@@ -67,16 +70,17 @@ export default function TeacherForm({
     }
   }, [errors.img]);
 
+  // Handle form submission
   const onSubmit = (data: Inputs) => {
-    // Your form submission logic
     console.log(data);
   };
 
   return (
     <form className="flex flex-col gap-8" onSubmit={handleSubmit(onSubmit)}>
       <h1 className="text-xl font-semibold dark:text-slate-400">
-        Create a new Teacher
+        Create a new student{" "}
       </h1>
+      {/* Authentication Information */}
       <span className="text-xs text-gray-400 font-medium">
         Authentication Information
       </span>
@@ -104,6 +108,8 @@ export default function TeacherForm({
           error={errors?.password}
         />
       </div>
+
+      {/* Personal Information */}
       <span className="text-xs text-gray-400 font-medium">
         Personal Information
       </span>
@@ -151,7 +157,9 @@ export default function TeacherForm({
           error={errors.birthday}
           type="date"
         />
-        <div className="relative z-0 flex flex-col gap-2 w-full md:w-1/4 ">
+
+        {/* Gender Field */}
+        <div className="relative z-0 flex flex-col gap-2 w-full md:w-1/4">
           <select
             className="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-gray-400 dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             {...register("gender")}
@@ -169,30 +177,12 @@ export default function TeacherForm({
           >
             Gender
           </label>
-
-          <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-            <svg
-              className="w-4 h-4 text-gray-500"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M19 9l-7 7-7-7"
-              ></path>
-            </svg>
-          </span>
           {showGenderError && errors.gender?.message && (
-            <p className="text-xs text-red-400">
-              {errors.gender.message.toString()}
-            </p>
+            <p className="text-xs text-red-400">{errors.gender.message}</p>
           )}
         </div>
 
+        {/* Image Upload Field */}
         <div className="flex flex-col gap-2 w-full md:w-1/4 justify-center">
           <label
             className="text-xs text-gray-500 flex items-center gap-2 cursor-pointer"
@@ -206,12 +196,12 @@ export default function TeacherForm({
           </label>
           <input type="file" id="img" {...register("img")} className="hidden" />
           {showImageError && errors.img?.message && (
-            <p className="text-xs text-red-400">
-              {errors.img.message.toString()}
-            </p>
+            <p className="text-xs text-red-400">{errors.img.message}</p>
           )}
         </div>
       </div>
+
+      {/* Submit Button */}
       <button className="bg-blue-400 text-white p-2 rounded-md hover:bg-blue-500">
         {type === "create" ? "Create" : "Update"}
       </button>

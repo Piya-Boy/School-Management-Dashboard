@@ -1,7 +1,6 @@
 import TableSearch from "@/components/TableSearch";
 import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import SortOutlinedIcon from "@mui/icons-material/SortOutlined";
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import RemoveRedEyeOutlinedIcon from '@mui/icons-material/RemoveRedEyeOutlined';
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
@@ -110,9 +109,10 @@ export default function StudentListPage() {
               <SortOutlinedIcon className="text-gray-400 dark:text-gray-500" />
             </button>
             {role === "admin" && (
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
-              <AddOutlinedIcon className="text-gray-400 dark:text-gray-500" />
-            </button>
+            // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-lamaYellow">
+            //   <AddOutlinedIcon className="text-gray-400 dark:text-gray-500" />
+            // </button>
+            <FormModal table="student" type="create"/>
             )}
           </div>
         </div>

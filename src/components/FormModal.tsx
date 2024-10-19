@@ -4,13 +4,22 @@ import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { useState } from "react";
-import TeacherForm from "./forms/TeacherForm";
+import dynamic from "next/dynamic";
+import Spinner from "./Spinner";
+
+const TeacherForm = dynamic(() => import("./forms/TeacherForm"), {
+  loading: () => <Spinner />,
+});
+
+const StudentForm = dynamic(() => import("./forms/StudentForm"), {
+  loading: () => <Spinner />,
+});
 
 const forms: {
   [key: string]: (type: "create" | "update", data?: any) => JSX.Element;
 } = {
   teacher: (type, data) => <TeacherForm type={type} data={data} />,
-  // student: (type, data) => <StudentForm type={type} data={data} />
+  student: (type, data) => <StudentForm type={type} data={data} />
 };
 export default function FormModal({
   table,
