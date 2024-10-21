@@ -117,7 +117,7 @@ export default function FormModal({
           onClick={handleClickOutside}
         >
           <div
-            className={`bg-white dark:bg-slate-700 p-4 rounded-md relative w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%] transform transition-transform duration-800 ease-out translate-y-[-50px] opacity-0 ${
+            className={`bg-white dark:bg-slate-700 p-4 rounded-md relative w-[90%] md:w-[70%] lg:w-[60%] xl:w-[50%] 2xl:w-[40%] transform transition-transform duration-1000  ease-out translate-y-[-50px] opacity-0 ${
               open ? "translate-y-0 opacity-100" : ""
             }`}
             onClick={(e) => e.stopPropagation()} // Prevents modal click from closing
