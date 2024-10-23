@@ -76,12 +76,12 @@ export default function StudentListPage() {
       <td className="hidden md:table-cell dark:text-gray-100">{item.address}</td>
       <td>
         <div className="flex items-center gap-2">
-          <Link href={`/list/teachers/${item.id}`}>
+          <Link href={`/list/students/${item.id}`}>
             <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaSky cursor-pointer">
             <RemoveRedEyeOutlinedIcon className="text-gray-400 dark:text-gray-500" />
             </button>
           </Link>
-          {role === "admin" && (
+          {role === "admin" &&  (
             // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaPurple">
             // <DeleteOutlineOutlinedIcon className="text-gray-400 dark:text-gray-500" />
             // </button>
