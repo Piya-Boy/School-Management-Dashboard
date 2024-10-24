@@ -3,17 +3,26 @@ import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import SortOutlinedIcon from "@mui/icons-material/SortOutlined";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
-import { examsData, role } from "@/lib/data";
+import { role } from "@/lib/data";
 import FormModal from "@/components/FormModal";
-
-type Exam = {
-    id: number;
-    subject: string;
-    class: string;
-    teacher: string;
-    date: string;
+import { ITEM_PER_PAGE } from "@/lib/settings";
+import { Class, Exam, Prisma, Subject, Teacher } from "@prisma/client";
+import { db } from "@/lib/db";
+// type Exam = {
+//     id: number;
+//     subject: string;
+//     class: string;
+//     teacher: string;
+//     date: string;
+//   };
+type ExamList = Exam & {
+  lesson: {
+    subject: Subject;
+    class: Class;
+    teacher: Teacher;
   };
-  
+};
+
   const columns = [
     {
       header: "Subject Name",
@@ -38,17 +47,16 @@ type Exam = {
       accessor: "action",
     },
   ];
-export default function ExamListPage() {
 
-  const renderRow = (item: Exam) => (
+const renderRow = (item: ExamList) => (
     <tr
       key={item.id}
       className="border-b border-gray-200  dark:border-slate-600 even:bg-slate-50  dark:even:bg-slate-600 text-sm hover:bg-lamaPurpleLight dark:hover:bg-slate-600"
     >
-      <td className="flex items-center gap-4 p-4 dark:text-gray-100">{item.subject}</td>
-      <td className="dark:text-gray-100">{item.class}</td>
-      <td className="hidden md:table-cell dark:text-gray-100">{item.teacher}</td>
-      <td className="hidden md:table-cell dark:text-gray-100">{item.date}</td>
+      <td className="flex items-center gap-4 p-4 dark:text-gray-100">{item.lesson.subject.name}</td>
+      <td className="dark:text-gray-100">{item.lesson.class.name}</td>
+      <td className="hidden md:table-cell dark:text-gray-100">{item.lesson.teacher.name + " " + item.lesson.teacher.surname}</td>
+      <td className="hidden md:table-cell dark:text-gray-100">{new Intl.DateTimeFormat("th-TH").format(item.startTime)}</td>
      <td>
         <div className="flex items-center gap-2">
           {role === "admin" || role === "teacher" && (
@@ -62,6 +70,59 @@ export default function ExamListPage() {
     </tr>
   );
    
+export default async function ExamListPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };}) {
+
+  const { page, ...queryParams } = searchParams;
+  const p = page ? parseInt(page) : 1;
+
+  // URL PARAMS CONDITION
+
+  const query: Prisma.ExamWhereInput = {};
+  query.lesson = {};
+  if (queryParams) {
+    for (const [key, value] of Object.entries(queryParams)) {
+      if (value !== undefined) {
+        switch (key) {
+          case "classId":
+            query.lesson.classId = parseInt(value);
+            break;
+          case "teacherId":
+            query.lesson.teacherId = value;
+            break;
+          case "search":
+            query.lesson.subject = {
+              name: { contains: value, mode: "insensitive" },
+            };
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
+
+  
+  const [data, count] = await db.$transaction([
+    db.exam.findMany({
+      where: query,
+      include: {
+        lesson: {
+          select: {
+            subject: { select: { name: true } },
+            teacher: { select: { name: true, surname: true } },
+            class: { select: { name: true } },
+          },
+        },
+      },
+      take: ITEM_PER_PAGE,
+      skip: ITEM_PER_PAGE * (p - 1),
+    }),
+    db.exam.count({ where: query }),
+  ]);
+
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0 dark:bg-slate-700">
       {/* TOP */}
@@ -85,9 +146,9 @@ export default function ExamListPage() {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={examsData} />
+      <Table columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
-        <Pagination />
+        <Pagination page={p} count={count} />
     </div>
   );
 }
