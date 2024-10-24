@@ -6,20 +6,25 @@ import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
 import { Avatar } from "@mui/material";
 import Link from "next/link";
-import { role, studentsData } from "@/lib/data";
+import { role } from "@/lib/data";
 import FormModal from "@/components/FormModal";
+import { Class, Prisma, Student } from "@prisma/client";
+import { db } from "@/lib/db";
+import { ITEM_PER_PAGE } from "@/lib/settings";
 
-type Student = {
-    id: number;
-    studentId: string;
-    name: string;
-    email?: string;
-    photo: string;
-    phone?: string;
-    grade: number;
-    class: string;
-    address: string;
-  };
+// type Student = {
+//     id: number;
+//     studentId: string;
+//     name: string;
+//     email?: string;
+//     photo: string;
+//     phone?: string;
+//     grade: number;
+//     class: string;
+//     address: string;
+//   };
+
+type StudentList = Student & { class: Class };
   
   const columns = [
     {
@@ -51,47 +56,90 @@ type Student = {
       accessor: "action",
     },
   ];
-export default function StudentListPage() {
+  
+    const renderRow = (item: StudentList) => (
+      <tr
+        key={item.id}
+        className="border-b border-gray-200  dark:border-slate-600 even:bg-slate-50  dark:even:bg-slate-600 text-sm hover:bg-lamaPurpleLight dark:hover:bg-slate-600"
+      >
+        <td className="flex items-center gap-4 p-4">
+          <Avatar
+            src={item.img || ""}
+            alt={item.name}
+            sx={{ width: 40, height: 40 }}
+            className="md:hidden xl:block "
+          />
+          <div className="flex flex-col">
+            <h3 className="font-semibold dark:text-gray-100">{item.name}</h3>
+            <p className="text-xs text-gray-500 dark:text-gray-400">{item.class.name}</p>
+          </div>
+        </td>
+        <td className="hidden md:table-cell dark:text-gray-100">{item.username}</td>
+        <td className="hidden md:table-cell dark:text-gray-100">{item.class.name[0]}</td>
+        <td className="hidden md:table-cell dark:text-gray-100">{item.phone}</td>
+        <td className="hidden md:table-cell dark:text-gray-100">{item.address}</td>
+        <td>
+          <div className="flex items-center gap-2">
+            <Link href={`/list/students/${item.id}`}>
+              <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaSky cursor-pointer">
+              <RemoveRedEyeOutlinedIcon className="text-gray-400 dark:text-gray-500" />
+              </button>
+            </Link>
+            {role === "admin" &&  (
+              // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaPurple">
+              // <DeleteOutlineOutlinedIcon className="text-gray-400 dark:text-gray-500" />
+              // </button>
+              <FormModal table="student" type="delete" id={item.id}/>
+            )}
+          </div>
+        </td>
+      </tr>
+    );
+export default async function StudentListPage({searchParams,
+}: {
+  searchParams: { [key: string]: string  | undefined};
+}) {
 
-  const renderRow = (item: Student) => (
-    <tr
-      key={item.id}
-      className="border-b border-gray-200  dark:border-slate-600 even:bg-slate-50  dark:even:bg-slate-600 text-sm hover:bg-lamaPurpleLight dark:hover:bg-slate-600"
-    >
-      <td className="flex items-center gap-4 p-4">
-        <Avatar
-          src={item.photo}
-          alt={item.name}
-          sx={{ width: 40, height: 40 }}
-          className="md:hidden xl:block "
-        />
-        <div className="flex flex-col">
-          <h3 className="font-semibold dark:text-gray-100">{item.name}</h3>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{item.class}</p>
-        </div>
-      </td>
-      <td className="hidden md:table-cell dark:text-gray-100">{item.studentId}</td>
-      <td className="hidden md:table-cell dark:text-gray-100">{item.grade}</td>
-      <td className="hidden md:table-cell dark:text-gray-100">{item.phone}</td>
-      <td className="hidden md:table-cell dark:text-gray-100">{item.address}</td>
-      <td>
-        <div className="flex items-center gap-2">
-          <Link href={`/list/students/${item.id}`}>
-            <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaSky cursor-pointer">
-            <RemoveRedEyeOutlinedIcon className="text-gray-400 dark:text-gray-500" />
-            </button>
-          </Link>
-          {role === "admin" &&  (
-            // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaPurple">
-            // <DeleteOutlineOutlinedIcon className="text-gray-400 dark:text-gray-500" />
-            // </button>
-            <FormModal table="student" type="delete" id={item.id}/>
-          )}
-        </div>
-      </td>
-    </tr>
-  );
-   
+  const {page, ...queryParams} = searchParams;
+
+  const p = page ? parseInt(page) : 1;
+
+  const query: Prisma.StudentWhereInput = {};
+
+  if (queryParams) {
+    for (const [key, value] of Object.entries(queryParams)) {
+      if (value !== undefined) {
+        switch (key) {
+          case "teacherId":
+            query.class = {
+              lessons: {
+                some: {
+                  teacherId: value,
+                },
+              },
+            };
+            break;
+          case "search":
+            query.name = { contains: value, mode: "insensitive" };
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
+
+  const [data, count] = await db.$transaction([   
+    db.student.findMany({
+      where: query,
+      include: {
+        class: true,
+    },
+    take: ITEM_PER_PAGE,
+    skip: ITEM_PER_PAGE * (p - 1),
+  }),
+  db.student.count({ where: query }),
+])
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0 dark:bg-slate-700">
       {/* TOP */}
@@ -118,9 +166,9 @@ export default function StudentListPage() {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={studentsData} />
+      <Table columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
-        <Pagination />
+        <Pagination page={p} count={count} />
     </div>
   );
 }

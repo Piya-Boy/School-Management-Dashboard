@@ -60,61 +60,61 @@ const columns = [
     accessor: "action",
   },
 ];
+const renderRow = (item: TeacherList) => (
+  <tr
+    key={item.id}
+    className="border-b border-gray-200  dark:border-slate-600 even:bg-slate-50  dark:even:bg-slate-600 text-sm hover:bg-lamaPurpleLight dark:hover:bg-slate-600"
+  >
+    <td className="flex items-center gap-4 p-4">
+      <Avatar
+        src={item.img || ""}
+        alt={item.name}
+        sx={{ width: 40, height: 40 }}
+        className="md:hidden xl:block "
+      />
+      <div className="flex flex-col">
+        <h3 className="font-semibold dark:text-gray-100">{item.name}</h3>
+        <p className="text-xs text-gray-500 dark:text-gray-400">
+          {item?.email}
+        </p>
+      </div>
+    </td>
+    <td className="hidden md:table-cell dark:text-gray-100">
+      {item.username}
+    </td>
+    <td className="hidden md:table-cell dark:text-gray-100">
+      {item.subjects.map((subject) => subject.name).join(",")}
+    </td>
+    <td className="hidden md:table-cell dark:text-gray-100">
+      {item.classes.map((classItem) => classItem.name).join(",")}
+    </td>
+    <td className="hidden md:table-cell dark:text-gray-100">{item.phone}</td>
+    <td className="hidden md:table-cell dark:text-gray-100">
+      {item.address}
+    </td>
+    <td>
+      <div className="flex items-center gap-2">
+        <Link href={`/list/teachers/${item.id}`}>
+          <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaSky cursor-pointer">
+            <RemoveRedEyeOutlinedIcon className="text-gray-400 dark:text-gray-500" />
+          </button>
+        </Link>
+        {role === "admin" && (
+          // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaPurple">
+          // <DeleteOutlineOutlinedIcon className="text-gray-400 dark:text-gray-500" />
+          // </button>
+          <FormModal table="teacher" type="delete" id={item.id} />
+        )}
+      </div>
+    </td>
+  </tr>
+);
 
 export default async function TeacherListPage({
   searchParams,
 }: {
   searchParams: { [key: string]: string  | undefined};
 }) {
-  const renderRow = (item: TeacherList) => (
-    <tr
-      key={item.id}
-      className="border-b border-gray-200  dark:border-slate-600 even:bg-slate-50  dark:even:bg-slate-600 text-sm hover:bg-lamaPurpleLight dark:hover:bg-slate-600"
-    >
-      <td className="flex items-center gap-4 p-4">
-        <Avatar
-          src={item.img || ""}
-          alt={item.name}
-          sx={{ width: 40, height: 40 }}
-          className="md:hidden xl:block "
-        />
-        <div className="flex flex-col">
-          <h3 className="font-semibold dark:text-gray-100">{item.name}</h3>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
-            {item?.email}
-          </p>
-        </div>
-      </td>
-      <td className="hidden md:table-cell dark:text-gray-100">
-        {item.username}
-      </td>
-      <td className="hidden md:table-cell dark:text-gray-100">
-        {item.subjects.map((subject) => subject.name).join(",")}
-      </td>
-      <td className="hidden md:table-cell dark:text-gray-100">
-        {item.classes.map((classItem) => classItem.name).join(",")}
-      </td>
-      <td className="hidden md:table-cell dark:text-gray-100">{item.phone}</td>
-      <td className="hidden md:table-cell dark:text-gray-100">
-        {item.address}
-      </td>
-      <td>
-        <div className="flex items-center gap-2">
-          <Link href={`/list/teachers/${item.id}`}>
-            <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaSky cursor-pointer">
-              <RemoveRedEyeOutlinedIcon className="text-gray-400 dark:text-gray-500" />
-            </button>
-          </Link>
-          {role === "admin" && (
-            // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-lamaPurple">
-            // <DeleteOutlineOutlinedIcon className="text-gray-400 dark:text-gray-500" />
-            // </button>
-            <FormModal table="teacher" type="delete" id={item.id} />
-          )}
-        </div>
-      </td>
-    </tr>
-  );
 
   const {page, ...queryParams} = searchParams;
 

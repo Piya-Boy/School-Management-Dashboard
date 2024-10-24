@@ -25,25 +25,24 @@ export default function TableSearch() {
   }, [searchValue, router]);
 
   return (
-    <div
-      className="w-full md:w-auto flex items-center gap-2 text-xs rounded-full ring-[1.5px] ring-gray-300 dark:ring-slate-600 px-2"
-    >
-      {/* Material UI Icon */}
-      <SearchOutlinedIcon className="text-gray-400 dark:text-gray-500" />
+    <div className="w-full md:w-auto flex items-center justify-between gap-2 text-xs rounded-full ring-[1.5px] ring-gray-300 dark:ring-slate-600 px-2">
+      <div className="flex items-center">
+        {/* Material UI Icon */}
+        <SearchOutlinedIcon className="text-gray-400 dark:text-gray-500" />
 
-      {/* Search Input */}
-      <input
-        type="text"
-        placeholder="Search..."
-        value={searchValue}
-        onChange={(e) => setSearchValue(e.target.value)} // Update the search value on every keystroke
-        className="w-[200px] p-2 bg-transparent outline-none dark:text-slate-100"
-      />
-
+        {/* Search Input */}
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchValue}
+          onChange={(e) => setSearchValue(e.target.value)} // Update the search value on every keystroke
+          className="w-[200px]  p-2 bg-transparent outline-none dark:text-slate-100"
+        />
+      </div>
       {/* Close Icon */}
       {searchValue && (
         <CloseOutlinedIcon
-          className="text-gray-400 dark:text-gray-500 cursor-pointer"
+          className="text-gray-400 dark:text-gray-500 cursor-pointer "
           onClick={() => setSearchValue("")}
         />
       )}
