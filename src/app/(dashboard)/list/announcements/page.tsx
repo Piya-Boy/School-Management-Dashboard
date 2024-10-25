@@ -3,16 +3,20 @@ import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
 import SortOutlinedIcon from "@mui/icons-material/SortOutlined";
 import Pagination from "@/components/Pagination";
 import Table from "@/components/Table";
-import { announcementsData, role } from "@/lib/data";
+import {  role } from "@/lib/data";
 import FormModal from "@/components/FormModal";
+import { ITEM_PER_PAGE } from "@/lib/settings";
+import { Announcement, Class, Prisma } from "@prisma/client";
+import { db } from "@/lib/db";
 
+// type Announcement = {
+//     id: number;
+//     title: string;
+//     class: string;
+//     date: string;
+//   };
 
-type Announcement = {
-    id: number;
-    title: string;
-    class: string;
-    date: string;
-  };
+type AnnouncementList = Announcement & { class: Class };
   
   const columns = [
     {
@@ -33,17 +37,15 @@ type Announcement = {
       accessor: "action",
     },
   ];
-  
-export default function AnnouncementListPage() {
 
-  const renderRow = (item: Announcement) => (
+    const renderRow = (item: AnnouncementList) => (
     <tr
       key={item.id}
       className="border-b border-gray-200  dark:border-slate-600 even:bg-slate-50  dark:even:bg-slate-600 text-sm hover:bg-lamaPurpleLight dark:hover:bg-slate-600"
     >
       <td className="flex items-center gap-4 p-4 dark:text-gray-100">{item.title}</td>
-      <td className="dark:text-gray-100">{item.class}</td>
-      <td className="hidden md:table-cell dark:text-gray-100">{item.date}</td>
+      <td className="dark:text-gray-100">{item.class?.name || "-"}</td>
+      <td className="hidden md:table-cell dark:text-gray-100">{new Intl.DateTimeFormat("th-TH").format(new Date(item.date))}</td>
      <td>
         <div className="flex items-center gap-2">
           {role === "admin" && (
@@ -56,6 +58,45 @@ export default function AnnouncementListPage() {
       </td>
     </tr>
   );
+export default async function AnnouncementListPage({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };}) {
+
+    const { page, ...queryParams } = searchParams;
+
+    const p = page ? parseInt(page) : 1;
+  
+    // URL PARAMS CONDITION
+  
+    const query: Prisma.AnnouncementWhereInput = {};
+  
+    if (queryParams) {
+      for (const [key, value] of Object.entries(queryParams)) {
+        if (value !== undefined) {
+          switch (key) {
+            case "search":
+              query.title = { contains: value, mode: "insensitive" };
+              break;
+            default:
+              break;
+          }
+        }
+      }
+    }
+  
+    const [data, count] = await db.$transaction([
+      db.announcement.findMany({
+        where: query,
+        include: {
+          class: true,
+        },
+        take: ITEM_PER_PAGE,
+        skip: ITEM_PER_PAGE * (p - 1),
+      }),
+      db.announcement.count({ where: query }),
+    ]);
+  
    
   return (
     <div className="bg-white p-4 rounded-md flex-1 m-4 mt-0 dark:bg-slate-700">
@@ -80,9 +121,9 @@ export default function AnnouncementListPage() {
         </div>
       </div>
       {/* LIST */}
-      <Table columns={columns} renderRow={renderRow} data={announcementsData} />
+      <Table columns={columns} renderRow={renderRow} data={data} />
       {/* PAGINATION */}
-        <Pagination />
+        <Pagination page={p} count={count}/>
     </div>
   );
 }
